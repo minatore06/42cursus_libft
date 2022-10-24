@@ -18,12 +18,21 @@ char	*ft_substr(char const *s, unsigned int start, unsigned int len)
 	char	*d;
 
 	if (start >= (unsigned int)ft_strlen((char *)s))
-		return (malloc(0));
-	i = ft_strlen(&((char *)s)[start]);
-	if (len > (unsigned int)i)
-		len = i;
+		len = 0;
+	else
+	{
+		i = ft_strlen(&((char *)s)[start]);
+		if (len > (unsigned int)i)
+			len = i;
+	}
 	len++;
 	d = malloc(sizeof(char) * len);
-	ft_strlcpy(d, &s[start], len);
+	if (d)
+	{
+		if (start >= (unsigned int)ft_strlen((char *)s))
+			d[0] = 0;
+		else
+			ft_strlcpy(d, &s[start], len);
+	}
 	return (d);
 }

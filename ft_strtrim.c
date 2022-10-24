@@ -20,12 +20,31 @@ static int	chrset(const char ch, const char *set)
 	while (set[j])
 	{
 		if (ch == set[j])
-		{
 			return (1);
-		}
 		j++;
 	}
 	return (0);
+}
+
+static int	get_newlen(const char *str, const char *set)
+{
+	int	i;
+	int	len;
+
+	i = 0;
+	len = 0;
+	while (str[i] && chrset(str[i], set))
+		i++;
+	len = i;
+	while (str[len])
+		len++;
+	len--;
+	while (len >= 0 && chrset(str[len], set))
+		len--;
+	len++;
+	if (len - i < 0)
+		return (0);
+	return (len - i);
 }
 
 char	*ft_strtrim(const char *s1, const char *set)
@@ -34,7 +53,9 @@ char	*ft_strtrim(const char *s1, const char *set)
 	int		k;
 	char	*str;
 
-	str = malloc(sizeof(char) * (ft_strlen((char *)s1) + 1));
+	str = malloc(sizeof(char) * (get_newlen(s1, set) + 1));
+	if (!str)
+		return (str);
 	i = 0;
 	k = 0;
 	while (s1[i])
